@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NZTA Webcams South Canterbury NOC</title>
+  <link rel="icon" href="https://www.journeys.nzta.govt.nz/_resources/themes/default/build/favicon.ico" type="image/x-icon" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 10px;
+      background-color: #00456f;
+      flex-shrink: 0;
+    }
+
+    .navbar button {
+      padding: 10px 20px;
+      color: white;
+      background: #444;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      border-radius: 4px;
+    }
+
+    .navbar button.active {
+      background: #568203;
+    }
+
+    .progress-container {
+      width: 100%;
+      height: 10px;
+      background: #ddd;
+      flex-shrink: 0;
+    }
+
+    .progress-bar {
+      height: 10px;
+      background: #ff0000;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    .page {
+      display: none;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .page-header {
+      font-size: 1.5em;
+      font-weight: bold;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 10px;
+      height: calc(100vh - 160px);
+      box-sizing: border-box;
+    }
+
+    .panel {
+      display: flex;
+      flex-direction: column;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      padding: 5px;
+      overflow: hidden;
+    }
+
+    .image-wrapper {
+      position: relative;
+      width: 100%;
+      padding-top: 46%;
+      overflow: hidden;
+    }
+
+    .image-wrapper img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .panel input[type="text"] {
+      margin-top: 5px;
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 0.9em;
+      background: #fff;
+      font-weight: bold;
+      color: #00456b;
+      text-align: center;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      background-color: #00456f;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .logo {
+      height: 30px;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <button onclick="showPage(0)" class="active">Page 1</button>
+    <button onclick="showPage(1)">Page 2</button>
+  </div>
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+  <div class="page active" id="page0">
+    <div class="page-header"> Webcams South Canterbury Page 1</div>
+    <div class="grid">
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/735.jpg" alt="Burkes Pass"></div><input type="text" placeholder="Burkes Pass"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/730.jpg" alt="SH8 SH80 Intersection"></div><input type="text" placeholder="SH8 SH80 Intersection"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/731.jpg" alt="SH80 Westbound"></div><input type="text" placeholder="SH80 Westbound"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/733.jpg" alt="SH79 Upper Orari East"></div><input type="text" placeholder="SH79 Upper Orari East"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/734.jpg" alt="SH79 Upper Orari Bridge"></div><input type="text" placeholder="SH79 Upper Orari Bridge"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/840.jpg" alt="SH77 Rakaia Gorge"></div><input type="text" placeholder="SH77 Rakaia Gorge"></div>
+      <div class="panel"><div class="image-wrapper"><img src="http://www.onfarm.co.nz/cameras/stw2.jpg" alt="Waitaki River SW"></div><input type="text" placeholder="Waitaki River SW"></div>
+      <div class="panel"><div class="image-wrapper"><img src="http://www.onfarm.co.nz/cameras/farmbarn.jpg" alt="SH8 Fairlie Lookout"></div><input type="text" placeholder="SH8 Fairlie Lookout"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/725.jpg" alt="SH8 Lindis Pass"></div><input type="text" placeholder="SH8 Lindis Pass"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/736.jpg" alt="SH8 Twizel North"></div><input type="text" placeholder="SH8 Twizel North"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/737.jpg" alt="SH8 Twizel South"></div><input type="text" placeholder="SH8 Twizel South"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/724.jpg" alt="SH82 Waimate"></div><input type="text" placeholder="SH82 Waimate"></div>
+    </div>
+  </div>
+  <div class="page" id="page1">
+    <div class="page-header">Webcams South Canterbury Page 2</div>
+    <div class="grid">
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/728.jpg" alt="SH1 Ashbury North"></div><input type="text" placeholder="SH1 Ashbury North"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/729.jpg" alt="SH1 Ashbury South"></div><input type="text" placeholder="SH1 Ashbury South"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://tekapotourism.nz/webcam/images/centre.jpg" alt="Tekapo - Tekapo Tourism"></div><input type="text" placeholder="Tekapo - Tekapo Tourism"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/628.jpg" alt="SH1 Rakaia Bridge North"></div><input type="text" placeholder="SH1 Rakaia Bridge North"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/629.jpg" alt="SH1 Rakaia Bridge South"></div><input type="text" placeholder="SH1 Rakaia Bridge South"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/631.jpg" alt="SH1 Rakaia"></div><input type="text" placeholder="SH1 Rakaia"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/803.jpg" alt="SH1 Walnut Ave"></div><input type="text" placeholder="SH1 Walnut Ave"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/831.jpg" alt="SH1 Tinwald North"></div><input type="text" placeholder="SH1 Tinwald North"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/714.jpg" alt="SH1 Tinwald South"></div><input type="text" placeholder="SH1 Tinwald South"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/716.jpg" alt="SH8 Fairlie North"></div><input type="text" placeholder="SH8 Fairlie North"></div>
+      <div class="panel"><div class="image-wrapper"><img src="https://trafficnz.info/camera/717.jpg" alt="SH8 Fairlie South"></div><input type="text" placeholder="SH8 Fairlie South"></div>
+      <div class="panel"><div class="image-wrapper"><img src="http://www.onfarm.co.nz/cameras/lake.jpg" alt="Lake Opuha - Fairlie"></div><input type="text" placeholder="Lake Opuha - Fairlie"></div>
+    </div>
+  </div>
+  <footer>
+    <span>Page produced by Green Signal Ltd in 2025 using images from NZTA and other open sources. NZTA images are updated each minute. Other image sources may not be current or regularly updated. You can contact me on 027 599 4584</span>
+    <img src="https://nzta.govt.nz/_resources/themes/default/dist/css/png/nzta-logo-coloured.png?m=1739140524" alt="Logo" class="logo" />
+  </footer>
+
+  <script>
+    const pages = document.querySelectorAll('.page');
+    const buttons = document.querySelectorAll('.navbar button');
+    const progressBar = document.getElementById('progressBar');
+    let currentPage = 0;
+    let timer = 0;
+    const duration = 32;
+
+    function showPage(index) {
+      pages.forEach((page, i) => {
+        page.classList.toggle('active', i === index);
+        buttons[i].classList.toggle('active', i === index);
+      });
+      currentPage = index;
+      timer = 0;
+      progressBar.style.width = '0%';
+    }
+
+    function updateTimer() {
+      timer += 0.1;
+      const percent = Math.min((timer / duration) * 100, 100);
+      progressBar.style.width = percent + '%';
+      if (timer >= duration) {
+        currentPage = (currentPage + 1) % pages.length;
+        showPage(currentPage);
+      }
+    }
+
+    function refreshImages() {
+      const images = document.querySelectorAll('.image-wrapper img');
+      images.forEach((img) => {
+        const baseUrl = img.src.split('?')[0];
+        const timestamp = new Date().getTime();
+        img.src = `${baseUrl}?t=${timestamp}`;
+        // Update link href if wrapped
+        if (img.parentElement.tagName.toLowerCase() === 'a') {
+          img.parentElement.href = baseUrl;
+        }
+      });
+    }
+
+    function makeImagesClickable() {
+      document.querySelectorAll('.image-wrapper img').forEach(img => {
+        if (img.parentElement.tagName.toLowerCase() !== 'a') {
+          const link = document.createElement('a');
+          link.href = img.src.split('?')[0];
+          link.target = '_blank';
+          img.parentNode.insertBefore(link, img);
+          link.appendChild(img);
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      makeImagesClickable();
+      setInterval(refreshImages, 30000);
+      setInterval(updateTimer, 100);
+    });
+  </script>
+</body>
+</html>
+
